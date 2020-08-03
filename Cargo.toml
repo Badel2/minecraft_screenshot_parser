@@ -1,0 +1,24 @@
+[package]
+name = "minecraft_screenshot_parser"
+version = "0.1.0"
+authors = ["Badel2 <2badel2@gmail.com>"]
+edition = "2018"
+license = "GPL-3.0+"
+description = """
+Process information from Minecraft screenshots
+"""
+readme = "README.md"
+repository = "https://github.com/badel2/minecraft_screenshot_parser"
+documentation = "https://docs.rs/minecraft_screenshot_parser"
+keywords = ["image", "vision", "image-processing", "minecraft"]
+
+[lib]
+name = "minecraft_screenshot_parser"
+
+[dependencies]
+image = { version = "0.23.6", default-features = false }
+imageproc = { version = "0.21", default-features = false }
+lazy_static = "1.4"
+
+[dev-dependencies]
+image = { version = "0.23.6", default-features = false, features = ["png", "jpeg"] }
