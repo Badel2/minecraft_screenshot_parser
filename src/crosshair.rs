@@ -131,9 +131,8 @@ fn interpolate(x: u8, input: (u8, u8), output: (u8, u8)) -> u8 {
     let x2 = (x1 + u16::from((input.1 - input.0) / 2)) / u16::from(input.1 - input.0);
     // x from [0, output.range] to [output.0, output.1]
     let x3 = x2 + u16::from(output.0);
-    let x4 = u8::try_from(x3).unwrap();
 
-    x4
+    u8::try_from(x3).unwrap()
 }
 
 fn invert_crosshair<I>(img: &mut I, scale: u8)
@@ -147,7 +146,7 @@ where
     };
 
     match scale {
-        1 ..= 6 => {
+        1..=6 => {
             let scale = scale.into();
             for x in 0..scale {
                 for y in 0..scale * 5 {
