@@ -11,6 +11,9 @@ readme = "README.md"
 repository = "https://github.com/badel2/minecraft_screenshot_parser"
 documentation = "https://docs.rs/minecraft_screenshot_parser"
 keywords = ["image", "vision", "image-processing", "minecraft"]
+exclude = [
+    "blob/*",
+]
 
 [lib]
 name = "minecraft_screenshot_parser"
