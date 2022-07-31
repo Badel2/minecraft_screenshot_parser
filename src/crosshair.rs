@@ -358,7 +358,7 @@ pub fn remove_crosshair(img: &mut DynamicImage) -> Option<Crosshair> {
     let (mut center_img, (center_offset_x, center_offset_y, _center_w, _center_h)) =
         crop_image_at_center(img, center_radius);
 
-    let (center_red, center_green, center_blue) = split_image_into_channels(&center_img);
+    let (center_red, center_green, center_blue) = split_image_into_channels(&*center_img);
 
     let mut channels = Vec::with_capacity(3);
     for center_red in vec![center_red, center_green, center_blue] {
@@ -416,7 +416,7 @@ pub fn remove_crosshair(img: &mut DynamicImage) -> Option<Crosshair> {
 
             // Invert crosshair
             invert_crosshair(
-                &mut center_img.sub_image(
+                &mut *center_img.sub_image(
                     rect.left() as u32 + 1,
                     rect.top() as u32 + 1,
                     rect.width() - 2,
@@ -425,7 +425,7 @@ pub fn remove_crosshair(img: &mut DynamicImage) -> Option<Crosshair> {
                 scale as u8,
             );
 
-            let (center_red, center_green, center_blue) = split_image_into_channels(&center_img);
+            let (center_red, center_green, center_blue) = split_image_into_channels(&*center_img);
 
             let mut channels = vec![];
             for center_red in vec![center_red, center_green, center_blue] {
@@ -460,7 +460,7 @@ pub fn remove_crosshair(img: &mut DynamicImage) -> Option<Crosshair> {
             } else {
                 // Invert crosshair back and keep looking for smaller crosshairs
                 invert_crosshair(
-                    &mut center_img.sub_image(
+                    &mut *center_img.sub_image(
                         rect.left() as u32 + 1,
                         rect.top() as u32 + 1,
                         rect.width() - 2,
