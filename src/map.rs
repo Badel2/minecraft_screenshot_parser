@@ -941,9 +941,9 @@ where
     I: GenericImageView<Pixel = Rgba<u8>>,
 {
     let (w, h) = img.dimensions();
-    let mut red_image = DynamicImage::new_luma8(w, h).to_luma();
-    let mut green_image = DynamicImage::new_luma8(w, h).to_luma();
-    let mut blue_image = DynamicImage::new_luma8(w, h).to_luma();
+    let mut red_image = DynamicImage::new_luma8(w, h).to_luma8();
+    let mut green_image = DynamicImage::new_luma8(w, h).to_luma8();
+    let mut blue_image = DynamicImage::new_luma8(w, h).to_luma8();
 
     for (x, y, pixel) in img.pixels() {
         let red = Luma([pixel[0]]);

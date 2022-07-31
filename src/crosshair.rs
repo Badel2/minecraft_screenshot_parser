@@ -15,9 +15,9 @@ where
     I: GenericImageView<Pixel = Rgba<u8>>,
 {
     let (w, h) = img.dimensions();
-    let mut red_image = DynamicImage::new_luma8(w, h).to_luma();
-    let mut green_image = DynamicImage::new_luma8(w, h).to_luma();
-    let mut blue_image = DynamicImage::new_luma8(w, h).to_luma();
+    let mut red_image = DynamicImage::new_luma8(w, h).to_luma8();
+    let mut green_image = DynamicImage::new_luma8(w, h).to_luma8();
+    let mut blue_image = DynamicImage::new_luma8(w, h).to_luma8();
 
     for (x, y, pixel) in img.pixels() {
         let red = Luma([pixel[0]]);
@@ -37,7 +37,7 @@ fn merge_channels_pixelwise_median(channels: &[GrayImage]) -> GrayImage {
     assert_ne!(channels.len(), 0);
     // Merge the 3 channels into one
     let mut lines_red =
-        DynamicImage::new_luma8(channels[0].dimensions().0, channels[0].dimensions().1).to_luma();
+        DynamicImage::new_luma8(channels[0].dimensions().0, channels[0].dimensions().1).to_luma8();
     for x in 0..lines_red.dimensions().0 {
         for y in 0..lines_red.dimensions().1 {
             let mut to_be_sorted: Vec<_> = channels.iter().map(|c| c.get_pixel(x, y)[0]).collect();
@@ -181,7 +181,7 @@ fn find_negative_color_edges(center_red: &GrayImage) -> GrayImage {
     // This will ignore any diagonal edges that we are not interested in
     let mut lines_red =
         DynamicImage::new_luma8(center_red.dimensions().0 - 1, center_red.dimensions().1 - 1)
-            .to_luma();
+            .to_luma8();
     for x in 0..lines_red.dimensions().0 {
         for y in 0..lines_red.dimensions().1 {
             let p0 = center_red.get_pixel(x, y)[0];
