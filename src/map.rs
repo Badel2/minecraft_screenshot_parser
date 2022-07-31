@@ -452,14 +452,14 @@ fn gradient_descent(
     let mut m = initial_m;
     let mut n = initial_n;
     let learning_rate = initial_learning_rate;
+    let mut y_pred: Vec<f32> = vec![0f32; x.len()];
+    let mut y_err: Vec<f32> = vec![0f32; x.len()];
     for _epoch in 0..num_iterations {
         // y_pred = x * m + n
-        let y_pred: Vec<f32> = x.iter().copied().map(|x| (x as f32) * m + n).collect();
-        let y_err: Vec<f32> = y
-            .iter()
-            .zip(y_pred.iter())
-            .map(|(y, y_pred)| y_pred - (*y as f32))
-            .collect();
+        for i in 0..x.len() {
+            y_pred[i] = (x[i] as f32) * m + n;
+            y_err[i] = y_pred[i] - (y[i] as f32);
+        }
         // derivative of error with respect to n
         let dn = 1.0 / sample_size
             * (0..x.len())
@@ -471,11 +471,13 @@ fn gradient_descent(
                 .map(|i| in_error_range(y_err[i]) * y_err[i] * (x[i] as f32))
                 .sum::<f32>();
 
-        let _error_value = 1.0 / (2.0 * sample_size)
+        /*
+        let error_value = 1.0 / (2.0 * sample_size)
             * (0..x.len())
                 .map(|i| relu(y_err[i] * y_err[i] - 0.25))
                 .sum::<f32>();
-        //println!("Error {}: m: {} n: {}", error_value, dm, dn);
+        println!("Error {}: m: {} n: {}", error_value, dm, dn);
+        */
 
         m -= learning_rate * dm;
         n -= learning_rate * dn;
