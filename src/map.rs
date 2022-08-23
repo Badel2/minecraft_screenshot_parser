@@ -153,7 +153,7 @@ pub fn rectilinear_shapes_match_template(
                 continue;
             }
 
-            let small_bb_side = smaller_side(&cand_bb);
+            let small_bb_side = smaller_side(cand_bb);
             let (score, found_pieces) = find_matching_pieces_using_transform(
                 &shapes_map,
                 &template_shapes,
@@ -251,7 +251,7 @@ fn find_matching_pieces_using_transform<'a>(
         {
             // The scale ratio between bounding boxes should be close to 1.0
             // Allow 90% error margin: accept scale ratios between 0.1 and 1.9
-            let scale_ratio = ScaleTranslate::from_rect_to_rect(&cand_bb, &expected_img_bb);
+            let scale_ratio = ScaleTranslate::from_rect_to_rect(cand_bb, &expected_img_bb);
             if !approx_equal(scale_ratio.scale.0, 1.0, 0.9) {
                 continue;
             }
@@ -259,13 +259,13 @@ fn find_matching_pieces_using_transform<'a>(
                 continue;
             }
             // Allow 10% error margin for the size of the smaller side of the bounding box
-            if !approx_equal(smaller_side(&cand_bb), small_bb_side, 0.1) {
+            if !approx_equal(smaller_side(cand_bb), small_bb_side, 0.1) {
                 continue;
             }
 
             // Score: distance between expected point and actual point
-            let mut score = distance_between_start_of_rects(&expected_img_bb, &cand_bb);
-            score += distance_between_end_of_rects(&expected_img_bb, &cand_bb);
+            let mut score = distance_between_start_of_rects(&expected_img_bb, cand_bb);
+            score += distance_between_end_of_rects(&expected_img_bb, cand_bb);
             if best_piece.is_none() {
                 best_piece = Some((score, (cand_poly, cand_bb)));
             } else {
@@ -844,7 +844,7 @@ fn find_polygon_border(img: &GrayImage, start: (u32, u32)) -> RectPolygon {
     let mut steps = vec![];
     let mut pos = start;
     let mut s = (Direction::Right, 0);
-    let first_step = follow_direction_while_foreground(&img, pos, s.0);
+    let first_step = follow_direction_while_foreground(img, pos, s.0);
     s.1 = first_step;
     // Skip steps with length 0
     if s.1 != 0 {
@@ -858,7 +858,7 @@ fn find_polygon_border(img: &GrayImage, start: (u32, u32)) -> RectPolygon {
         //println!("pos {:?} dir {:?} steps: {:?}", pos, s.0, steps);
         //if steps.len() > 10 { panic!("debug"); }
         // Nothing more to the right, check down but as soon as we can, go to the right again
-        let (step, new_dir) = follow_direction_until_can_turn_counter_clockwise(&img, pos, s.0);
+        let (step, new_dir) = follow_direction_until_can_turn_counter_clockwise(img, pos, s.0);
         //println!("step {} new_dir {:?}", step, new_dir);
         s.1 = step;
         if s.1 != 0 {
