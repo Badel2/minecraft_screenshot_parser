@@ -19,9 +19,9 @@ exclude = [
 name = "minecraft_screenshot_parser"
 
 [dependencies]
-image = { version = "0.24.1", default-features = false, features = ["png"]  }
+image = { version = "0.24.7", default-features = false, features = ["png"]  }
 imageproc = { version = "0.23", default-features = false }
 lazy_static = "1.4"
 
 [dev-dependencies]
-image = { version = "0.24.1", default-features = false, features = ["png", "jpeg"] }
+image = { version = "0.24.7", default-features = false, features = ["png", "jpeg"] }
