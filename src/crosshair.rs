@@ -265,12 +265,12 @@ fn generate_crosshair_kernel(scale: u8) -> GrayImage {
 
         let draw_hline = |gray: &mut GrayImage, (x0, x1), y| {
             for x in x0..x1 {
-                gray.put_pixel(x as u32, y as u32, white);
+                gray.put_pixel(x, y, white);
             }
         };
         let draw_vline = |gray: &mut GrayImage, x, (y0, y1)| {
             for y in y0..y1 {
-                gray.put_pixel(x as u32, y as u32, white);
+                gray.put_pixel(x, y, white);
             }
         };
 
@@ -361,7 +361,7 @@ pub fn remove_crosshair(img: &mut DynamicImage) -> Option<Crosshair> {
     let (center_red, center_green, center_blue) = split_image_into_channels(&*center_img);
 
     let mut channels = Vec::with_capacity(3);
-    for center_red in vec![center_red, center_green, center_blue] {
+    for center_red in [center_red, center_green, center_blue] {
         let lines_red = find_negative_color_edges(&center_red);
         channels.push(lines_red);
     }
@@ -428,7 +428,7 @@ pub fn remove_crosshair(img: &mut DynamicImage) -> Option<Crosshair> {
             let (center_red, center_green, center_blue) = split_image_into_channels(&*center_img);
 
             let mut channels = vec![];
-            for center_red in vec![center_red, center_green, center_blue] {
+            for center_red in [center_red, center_green, center_blue] {
                 let lines_red = find_negative_color_edges(&center_red);
                 channels.push(lines_red);
             }

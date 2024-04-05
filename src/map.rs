@@ -149,7 +149,7 @@ pub fn rectilinear_shapes_match_template(
 
             // Skip non-square transformations
             let scale_ratio = template_to_image.scale.0 / template_to_image.scale.1;
-            if scale_ratio < 0.5 || scale_ratio > 1.5 {
+            if !(0.5..=1.5).contains(&scale_ratio) {
                 continue;
             }
 
@@ -184,10 +184,9 @@ pub fn rectilinear_shapes_match_template(
             let piece_bb = template_to_image.apply_rect(&poly_bb);
             imageproc::drawing::draw_hollow_rect_mut(img, piece_bb, Rgba([255, 255, 0, 255]));
         }
-        for found_piece in found_pieces {
-            if let Some((_piece, piece_bb)) = found_piece {
-                imageproc::drawing::draw_hollow_rect_mut(img, piece_bb, Rgba([0, 255, 0, 255]));
-            }
+        // Flatten `None` entries
+        for (_piece, piece_bb) in found_pieces.into_iter().flatten() {
+            imageproc::drawing::draw_hollow_rect_mut(img, piece_bb, Rgba([0, 255, 0, 255]));
         }
 
         return Some(template_to_image);
@@ -727,7 +726,7 @@ impl RectPolygon {
         u64::try_from(a / 2).unwrap()
     }
 
-    fn vertices<'a>(&'a self) -> impl Iterator<Item = (u32, u32)> + 'a {
+    fn vertices(&self) -> impl Iterator<Item = (u32, u32)> + '_ {
         let mut pos = self.start;
 
         std::iter::once(self.start).chain(self.steps.iter().cloned().filter_map(
