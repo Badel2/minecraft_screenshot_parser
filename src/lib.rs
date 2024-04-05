@@ -4,3 +4,8 @@ pub mod crosshair;
 pub mod map;
 /// Convert a map into colors from the expected map palette
 pub mod map_color_correct;
+
+pub mod deps {
+    pub use image;
+    pub use imageproc;
+}
